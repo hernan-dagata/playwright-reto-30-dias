@@ -39,6 +39,12 @@ Ejecutar una prueba específica:
 npx playwright test tests/example.spec.ts
 ```
 
+Ejecutar un escenario específico:
+
+```bash
+npx playwright test --grep "login sauce demo" --project="chromium" --headed
+```
+
 Ver el reporte HTML generado:
 
 ```bash
