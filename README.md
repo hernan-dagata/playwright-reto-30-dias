@@ -1,16 +1,12 @@
 # Playwright Reto 30 Días
 
-Proyecto de pruebas E2E desarrolladas con Playwright y TypeScript.
-
-## Descripción
-
-Este repositorio contiene una configuración básica de Playwright con TypeScript y un ejemplo de prueba en `tests/example.spec.ts`.
+Proyecto de pruebas E2E con Playwright y TypeScript. Contiene pruebas de ejemplo y un test de login para OrangeHRM.
 
 ## Contenido del proyecto
 
 - `package.json` - dependencias del proyecto
 - `playwright.config.ts` - configuración de Playwright
-- `tests/example.spec.ts` - pruebas de ejemplo
+- `tests/` - pruebas E2E (`tests/example.spec.ts`, `tests/training.spec.ts`, `tests/login.spec.ts`)
 - `playwright-report/` - reporte HTML generado por Playwright
 - `test-results/` - resultados de ejecución
 
@@ -21,31 +17,34 @@ Este repositorio contiene una configuración básica de Playwright con TypeScrip
 
 ## Instalación
 
+Instala dependencias y los navegadores de Playwright:
+
 ```bash
 npm install
+npx playwright install
 ```
 
 ## Ejecutar pruebas
 
-Ejecuta todas las pruebas definidas en `tests/`:
+Ejecuta todas las pruebas en `tests/`:
 
 ```bash
 npx playwright test
 ```
 
-Ejecutar una prueba específica:
+Ejecutar un archivo de prueba específico:
 
 ```bash
-npx playwright test tests/example.spec.ts
+npx playwright test tests/login.spec.ts
 ```
 
-Ejecutar un escenario específico:
+Ejecutar por nombre de test y en un proyecto concreto:
 
 ```bash
-npx playwright test --grep "login sauce demo" --project="chromium" --headed
+npx playwright test --grep "login" --project=chromium --headed
 ```
 
-Ver el reporte HTML generado:
+Mostrar reporte HTML:
 
 ```bash
 npx playwright show-report
@@ -56,19 +55,27 @@ npx playwright show-report
 - `testDir: './tests'`
 - `fullyParallel: true`
 - `reporter: 'html'`
-- Proyectos configurados para `chromium`, `firefox` y `webkit`
+- Proyectos: `chromium`, `firefox`, `webkit`
 - `trace: 'on-first-retry'`
+- `slowMo: 1000` en `launchOptions`
 
-## Ejemplo de prueba
+## Notas sobre los tests
 
-El archivo `tests/example.spec.ts` contiene dos casos básicos:
+- `tests/example.spec.ts`: pruebas de ejemplo contra playwright.dev
+- `tests/training.spec.ts`: test de login para https://www.saucedemo.com/ (valida el título `Products`)
+- `tests/login.spec.ts`: login a https://opensource-demo.orangehrmlive.com con credenciales válidas e inválidas, y validación de mensajes de error
 
-1. Verificar el título de la página de Playwright
-2. Hacer clic en el enlace "Get started" y validar que aparece el encabezado de instalación
+## Scripts sugeridos
 
-## Notas
+Puedes añadir los siguientes scripts a `package.json` para simplificar comandos:
 
-Actualmente `package.json` no define scripts personalizados, por lo que se recomienda usar `npx playwright test` para ejecutar las pruebas.
+```json
+"scripts": {
+  "test": "playwright test",
+  "test:headed": "playwright test --headed",
+  "report": "playwright show-report"
+}
+```
 
 ## Recursos
 
