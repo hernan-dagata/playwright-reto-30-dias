@@ -1,12 +1,12 @@
 # Playwright Reto 30 Días
 
-Proyecto de pruebas E2E con Playwright y TypeScript. Contiene pruebas de ejemplo y un test de login para OrangeHRM.
+Proyecto de pruebas E2E con Playwright y TypeScript. Contiene ejemplos y pruebas para la aplicación OrangeHRM, incluido un test de navegación actualizado.
 
 ## Contenido del proyecto
 
 - `package.json` - dependencias del proyecto
 - `playwright.config.ts` - configuración de Playwright
-- `tests/` - pruebas E2E (`tests/example.spec.ts`, `tests/training.spec.ts`, `tests/login.spec.ts`, `tests/users.spec.ts`)
+- `tests/` - pruebas E2E (`tests/example.spec.ts`, `tests/training.spec.ts`, `tests/login.spec.ts`, `tests/navegation.spec.ts`, `tests/users.spec.ts`)
 - `playwright-report/` - reporte HTML generado por Playwright
 - `test-results/` - resultados de ejecución
 
@@ -64,9 +64,10 @@ npx playwright show-report
 - `tests/example.spec.ts`: pruebas de ejemplo contra playwright.dev
 - `tests/training.spec.ts`: test de login para https://www.saucedemo.com/ (valida el título `Products`)
 - `tests/login.spec.ts`: login a https://opensource-demo.orangehrmlive.com con credenciales válidas e inválidas, y validación de mensajes de error
-- `tests/users.spec.ts`: 
-  - "Get all usernames registered in HRM": extrae todos los nombres de usuario del sistema de gestión de usuarios de OrangeHRM
-  - "Get all employees names registered in HRM": extrae todos los nombres de empleados registrados en OrangeHRM
+- `tests/navegation.spec.ts`: verifica las opciones del menú lateral en OrangeHRM después de iniciar sesión con credenciales válidas
+- `tests/users.spec.ts`: pruebas que extraen datos de la lista de usuarios de OrangeHRM
+  - `Get all usernames registered in HRM`
+  - `Get all employees names registered in HRM`
 
 ## Scripts sugeridos
 
