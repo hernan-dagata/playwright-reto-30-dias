@@ -1,12 +1,12 @@
 # Playwright Reto 30 Días
 
-Proyecto de pruebas E2E con Playwright y TypeScript. Contiene ejemplos y pruebas para la aplicación OrangeHRM, incluido un test de navegación actualizado.
+Proyecto de pruebas E2E con Playwright y TypeScript. Incluye pruebas de ejemplo y casos de uso para OrangeHRM y SauceDemo.
 
-## Contenido del proyecto
+## Estructura del proyecto
 
 - `package.json` - dependencias del proyecto
 - `playwright.config.ts` - configuración de Playwright
-- `tests/` - pruebas E2E (`tests/example.spec.ts`, `tests/training.spec.ts`, `tests/login.spec.ts`, `tests/navegation.spec.ts`, `tests/users.spec.ts`)
+- `tests/` - pruebas E2E
 - `playwright-report/` - reporte HTML generado por Playwright
 - `test-results/` - resultados de ejecución
 
@@ -24,9 +24,9 @@ npm install
 npx playwright install
 ```
 
-## Ejecutar pruebas
+## Ejecución de pruebas
 
-Ejecuta todas las pruebas en `tests/`:
+Ejecuta todas las pruebas definidas en `tests/`:
 
 ```bash
 npx playwright test
@@ -38,40 +38,57 @@ Ejecutar un archivo de prueba específico:
 npx playwright test tests/login.spec.ts
 ```
 
-Ejecutar por nombre de test y en un proyecto concreto:
+Ejecuta pruebas filtradas por nombre y en un proyecto específico:
 
 ```bash
 npx playwright test --grep "login" --project=chromium --headed
 ```
 
-Mostrar reporte HTML:
+Muestra el reporte generado:
 
 ```bash
 npx playwright show-report
 ```
 
-## Configuración actual
+## Configuración actual de Playwright
 
 - `testDir: './tests'`
 - `fullyParallel: true`
+- `forbidOnly` habilitado en CI
+- `retries: 2` en CI, `0` localmente
+- `workers: 1` en CI, indefinido localmente
 - `reporter: 'html'`
-- Proyectos: `chromium`, `firefox`, `webkit`
 - `trace: 'on-first-retry'`
-- `slowMo: 1000` en `launchOptions`
+- `launchOptions.slowMo: 1000`
+- Proyectos configurados: `chromium`, `firefox`, `webkit`
 
-## Notas sobre los tests
+## Pruebas disponibles
 
-- `tests/example.spec.ts`: pruebas de ejemplo contra playwright.dev
-- `tests/training.spec.ts`: test de login para https://www.saucedemo.com/ (valida el título `Products`)
-- `tests/login.spec.ts`: login a https://opensource-demo.orangehrmlive.com con credenciales válidas e inválidas, y validación de mensajes de error
-- `tests/navegation.spec.ts`: verifica las opciones del menú lateral en OrangeHRM después de iniciar sesión con credenciales válidas
-- `tests/users.spec.ts`: pruebas que extraen datos de la lista de usuarios de OrangeHRM
-  - `Get all usernames registered in HRM`
-  - `Get all employees names registered in HRM`
+- `tests/example.spec.ts`
+  - Verifica el título de `https://playwright.dev/`
+  - Navega al enlace "Get started" y valida que aparezca el encabezado de instalación
+
+- `tests/training.spec.ts`
+  - Inicia sesión en `https://www.saucedemo.com/`
+  - Valida que la página muestre el título `Products`
+
+- `tests/login.spec.ts`
+  - Login válido en OrangeHRM con `Admin` / `admin123`
+  - Login inválido y validación del mensaje `Invalid credentials`
+
+- `tests/navegation.spec.ts`
+  - Login en OrangeHRM con `Admin` / `admin123`
+  - Valida la visibilidad del menú lateral y las opciones disponibles
+  - Recorre los elementos del panel izquierdo y navega entre ellos
+
+- `tests/users.spec.ts`
+  - Login en OrangeHRM y navegación a la gestión de usuarios
+  - Extrae todos los nombres de usuario registrados en la tabla
+  - Extrae todos los nombres de empleados registrados en la tabla
 
 ## Scripts sugeridos
 
-Puedes añadir los siguientes scripts a `package.json` para simplificar comandos:
+Actualmente `package.json` no define scripts. Puedes agregar los siguientes para simplificar el uso:
 
 ```json
 "scripts": {

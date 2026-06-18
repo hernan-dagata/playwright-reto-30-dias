@@ -1,14 +1,14 @@
-import {test, expect} from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-test('Check left menu options', async ({page}) => {
+test('Check left menu options', async ({ page }) => {
 
     await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', {name: 'Username'}).fill('Admin');
-    await page.getByRole('textbox', {name: 'Password'}).fill('admin123');
-    await page.getByRole('button', {name: 'Login'}).click();
+    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('button', { name: 'Login' }).click();
 
     expect(page.url()).toContain('index.php/dashboard/index');
-    await expect(page.getByRole('link', {name: 'Admin'})).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
 
     const leftMenuItems = page.getByLabel('Sidepanel').getByRole('listitem')
     const currentMenuItems = await leftMenuItems.count();
@@ -27,4 +27,28 @@ test('Check left menu options', async ({page}) => {
     expect(currentMenuItemTexts).toEqual(expectedMenuItems);
     expect(currentMenuItemTexts[0]).toEqual('Admin');
     expect(currentMenuItemTexts.length).toEqual(expectedMenuItems.length);
+});
+
+test('Navegate throught the left panel', async ({ page }) => {
+
+    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('button', { name: 'Login' }).click();
+
+    expect(page.url()).toContain('index.php/dashboard/index');
+    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
+
+    const leftMenuItems = page.getByLabel('Sidepanel').getByRole('listitem')
+    const currentMenuItems = await leftMenuItems.count();
+
+    for (let i = 0; i < currentMenuItems; i++) {
+        const menuItemText = leftMenuItems.nth(i);
+        const menuItemTextValue = await menuItemText.innerText();
+        console.log("Current menu item:", menuItemTextValue);
+        await menuItemText.click();
+        if (menuItemTextValue == "Maintenance") {
+            await page.goBack();
+        }
+    }
 });
