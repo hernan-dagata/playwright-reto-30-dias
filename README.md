@@ -10,6 +10,10 @@ Proyecto de pruebas E2E con Playwright y TypeScript. Incluye pruebas de ejemplo 
 - `playwright-report/` - reporte HTML generado por Playwright
 - `test-results/` - resultados de ejecución
 
+## Cambios recientes
+
+- Actualización de `tests/navegation.spec.ts`: el test ahora recorre los elementos del panel izquierdo de OrangeHRM y navega entre ellos, regresando tras seleccionar la opción `Maintenance`.
+
 ## Requisitos
 
 - Node.js 18 o superior
@@ -74,15 +78,18 @@ npx playwright show-report
 
 - `tests/login.spec.ts`
   - Login válido en OrangeHRM con `Admin` / `admin123`
-  - Login inválido y validación del mensaje `Invalid credentials`
+  - Login inválido con contraseña incorrecta y validación del mensaje `Invalid credentials`
 
 - `tests/navegation.spec.ts`
   - Login en OrangeHRM con `Admin` / `admin123`
-  - Valida la visibilidad del menú lateral y las opciones disponibles
-  - Recorre los elementos del panel izquierdo y navega entre ellos
+  - Valida que la URL sea del dashboard y que el enlace `Admin` esté visible
+  - Comprueba la lista completa del menú lateral y que coincide con los elementos esperados
+  - Recorre cada opción del panel izquierdo y vuelve atrás tras seleccionar `Maintenance`
+  - Verifica las opciones de `Qualifications` dentro del menú `Admin` y valida sus rutas
+  - Verifica las opciones de `Configuration` dentro del menú `Admin` y valida sus rutas
 
 - `tests/users.spec.ts`
-  - Login en OrangeHRM y navegación a la gestión de usuarios
+  - Login en OrangeHRM y navegación a `Admin > User Management > Users`
   - Extrae todos los nombres de usuario registrados en la tabla
   - Extrae todos los nombres de empleados registrados en la tabla
 
