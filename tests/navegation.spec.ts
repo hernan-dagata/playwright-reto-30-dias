@@ -1,13 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from "../pageobjests/LoginPage";
 
 test('Check left menu options', async ({ page }) => {
 
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
-
-    expect(page.url()).toContain('index.php/dashboard/index');
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
     await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
 
     const leftMenuItems = page.getByLabel('Sidepanel').getByRole('listitem')
@@ -31,13 +28,8 @@ test('Check left menu options', async ({ page }) => {
 
 test('Navegate throught the left panel', async ({ page }) => {
 
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
-
-    expect(page.url()).toContain('index.php/dashboard/index');
-    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
 
     const leftMenuItems = page.getByLabel('Sidepanel').getByRole('listitem')
     const currentMenuItems = await leftMenuItems.count();
@@ -60,13 +52,8 @@ test('Check all the qualifications options', async ({ page }) => {
         { option: 'Licenses', path: '/web/index.php/admin/viewLicenses' }
     ];
 
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
-
-    expect(page.url()).toContain('index.php/dashboard/index');
-    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
 
     await page.getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('Qualifications').click();
@@ -88,13 +75,8 @@ test('Check all the Configuration options', async ({ page }) => {
         { option: 'Localization', path: '/web/index.php/admin/localization' }
     ];
 
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
-
-    expect(page.url()).toContain('index.php/dashboard/index');
-    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
 
     await page.getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('Configuration').click();

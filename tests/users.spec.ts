@@ -1,12 +1,10 @@
 import { test, expect } from "@playwright/test";
+import { LoginPage } from "../pageobjests/LoginPage";
 
 test('Get all usernames registered in HRM', async ({ page }) => {
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
-    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
 
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
 
     await page.getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('User Management').click();
@@ -25,12 +23,8 @@ test('Get all usernames registered in HRM', async ({ page }) => {
 
 test('Get all employees names registered in HRM', async ({ page }) => {
 
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
-    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
-
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
 
     await page.getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('User Management').click();
@@ -49,11 +43,9 @@ test('Get all employees names registered in HRM', async ({ page }) => {
 
 test('Select specific user for editing', async ({ page }) => {
 
-    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
-    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
+
     await page.getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('User Management').click();
     await page.getByRole('menuitem', { name: 'Users' }).click();

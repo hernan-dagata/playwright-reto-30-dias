@@ -12,7 +12,9 @@ Proyecto de pruebas E2E con Playwright y TypeScript. Incluye pruebas de ejemplo 
 
 ## Cambios recientes
 
-- Actualización de `tests/navegation.spec.ts`: el test ahora recorre los elementos del panel izquierdo de OrangeHRM y navega entre ellos, regresando tras seleccionar la opción `Maintenance`.
+- Actualización de `tests/navegation.spec.ts`: el test ahora recorre los elementos del panel izquierdo de OrangeHRM, valida la lista completa de opciones y navega entre ellas.
+- Se añadieron verificaciones de las subopciones de `Qualifications` y `Configuration` dentro del menú `Admin`.
+- Actualización de `tests/users.spec.ts`: se extraen nombres de usuario y nombres de empleados, y se selecciona un usuario específico para validación en el formulario de edición.
 
 ## Requisitos
 
@@ -81,7 +83,7 @@ npx playwright show-report
   - Login inválido con contraseña incorrecta y validación del mensaje `Invalid credentials`
 
 - `tests/navegation.spec.ts`
-  - Login en OrangeHRM con `Admin` / `admin123`
+  - Login en OrangeHRM con `Admin` / `admin123` usando el page object `LoginPage`
   - Valida que la URL sea del dashboard y que el enlace `Admin` esté visible
   - Comprueba la lista completa del menú lateral y que coincide con los elementos esperados
   - Recorre cada opción del panel izquierdo y vuelve atrás tras seleccionar `Maintenance`
@@ -89,10 +91,11 @@ npx playwright show-report
   - Verifica las opciones de `Configuration` dentro del menú `Admin` y valida sus rutas
 
 - `tests/users.spec.ts`
-  - Login en OrangeHRM y navegación a `Admin > User Management > Users`
+  - Login en OrangeHRM con `Admin` / `admin123` usando el page object `LoginPage`
+  - Navega a `Admin > User Management > Users`
   - Extrae todos los nombres de usuario registrados en la tabla
   - Extrae todos los nombres de empleados registrados en la tabla
-  - Selecciona un usuario específico distinto de `Admin` y valida que el formulario de edición muestra su nombre correctamente
+  - Selecciona un usuario aleatorio distinto de `Admin` y valida que el formulario de edición muestra su nombre correctamente
 
 ## Scripts sugeridos
 
