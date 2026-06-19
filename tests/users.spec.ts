@@ -46,3 +46,33 @@ test('Get all employees names registered in HRM', async ({ page }) => {
 
     console.log(employeeNames);
 });
+
+test('Select specific user for editing', async ({ page }) => {
+
+    await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
+    await page.getByRole('link', { name: 'Admin' }).click();
+    await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('User Management').click();
+    await page.getByRole('menuitem', { name: 'Users' }).click();
+
+    const rows = page.getByRole('table').getByRole('row');
+    await expect(rows.first()).toBeVisible();
+    console.log(`Rows found: ${await rows.count()}`);
+    const usernames: string[] = [];
+    for (let i = 1; i < await rows.count(); i++) { 
+        var username = await rows.nth(i).getByRole('cell').nth(1).innerText(); 
+        if (username !== 'Admin') { 
+            usernames.push(username); 
+        } 
+    }
+    console.log(usernames);
+    const randomIndex = Math.floor(Math.random() * usernames.length);
+    var userForEditing = usernames[randomIndex];
+    console.log(`Randomly selected user for editing: ${userForEditing}`);
+    const pencilButton = page.getByRole('table').getByRole('row').filter({ hasText: userForEditing }).locator('button').filter({ has: page.locator('i.bi-pencil-fill') });
+    await pencilButton.click();
+    expect(page.locator("//label[contains(.,'Username')]/parent::div/following-sibling::div/input")).toHaveValue(userForEditing);
+});

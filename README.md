@@ -92,6 +92,7 @@ npx playwright show-report
   - Login en OrangeHRM y navegación a `Admin > User Management > Users`
   - Extrae todos los nombres de usuario registrados en la tabla
   - Extrae todos los nombres de empleados registrados en la tabla
+  - Selecciona un usuario específico distinto de `Admin` y valida que el formulario de edición muestra su nombre correctamente
 
 ## Scripts sugeridos
 
