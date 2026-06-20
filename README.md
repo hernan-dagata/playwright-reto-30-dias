@@ -1,20 +1,24 @@
 # Playwright Reto 30 Días
 
-Proyecto de pruebas E2E con Playwright y TypeScript. Incluye pruebas de ejemplo y casos de uso para OrangeHRM y SauceDemo.
+Proyecto de pruebas E2E con Playwright y TypeScript. Incluye casos de prueba para OrangeHRM y SauceDemo, junto con page objects reutilizables.
 
 ## Estructura del proyecto
 
 - `package.json` - dependencias del proyecto
 - `playwright.config.ts` - configuración de Playwright
+- `components/SidePanel.ts` - page object para el menú lateral de OrangeHRM
+- `pageobjests/LoginPage.ts` - page object para el login de OrangeHRM
 - `tests/` - pruebas E2E
 - `playwright-report/` - reporte HTML generado por Playwright
 - `test-results/` - resultados de ejecución
 
 ## Cambios recientes
 
-- Actualización de `tests/navegation.spec.ts`: el test ahora recorre los elementos del panel izquierdo de OrangeHRM, valida la lista completa de opciones y navega entre ellas.
+- `tests/navegation.spec.ts` ahora recorre los elementos del panel izquierdo de OrangeHRM, valida la lista completa de opciones y navega entre ellas.
 - Se añadieron verificaciones de las subopciones de `Qualifications` y `Configuration` dentro del menú `Admin`.
-- Actualización de `tests/users.spec.ts`: se extraen nombres de usuario y nombres de empleados, y se selecciona un usuario específico para validación en el formulario de edición.
+- `tests/users.spec.ts` extrae nombres de usuario y nombres de empleados, y selecciona un usuario distinto de `Admin` para validar el formulario de edición.
+- Se centralizó el login en el page object `LoginPage` para mejorar la reutilización en varias pruebas.
+- Se añadió el componente `SidePanel` para manejar visibilidad, selección y filtrado de opciones del menú lateral.
 
 ## Requisitos
 
@@ -44,7 +48,7 @@ Ejecutar un archivo de prueba específico:
 npx playwright test tests/login.spec.ts
 ```
 
-Ejecuta pruebas filtradas por nombre y en un proyecto específico:
+Ejecuta pruebas filtradas por nombre en Chromium de forma visible:
 
 ```bash
 npx playwright test --grep "login" --project=chromium --headed
@@ -64,8 +68,9 @@ npx playwright show-report
 - `retries: 2` en CI, `0` localmente
 - `workers: 1` en CI, indefinido localmente
 - `reporter: 'html'`
-- `trace: 'on-first-retry'`
-- `launchOptions.slowMo: 1000`
+- `use.baseURL: 'https://opensource-demo.orangehrmlive.com'`
+- `use.trace: 'on-first-retry'`
+- `use.launchOptions.slowMo: 1000`
 - Proyectos configurados: `chromium`, `firefox`, `webkit`
 
 ## Pruebas disponibles
@@ -87,8 +92,9 @@ npx playwright show-report
   - Valida que la URL sea del dashboard y que el enlace `Admin` esté visible
   - Comprueba la lista completa del menú lateral y que coincide con los elementos esperados
   - Recorre cada opción del panel izquierdo y vuelve atrás tras seleccionar `Maintenance`
-  - Verifica las opciones de `Qualifications` dentro del menú `Admin` y valida sus rutas
-  - Verifica las opciones de `Configuration` dentro del menú `Admin` y valida sus rutas
+  - Valida las opciones de `Qualifications` dentro del menú `Admin` y sus rutas
+  - Valida las opciones de `Configuration` dentro del menú `Admin` y sus rutas
+  - Usa el componente `SidePanel` para controlar visibilidad y selección de opciones
 
 - `tests/users.spec.ts`
   - Login en OrangeHRM con `Admin` / `admin123` usando el page object `LoginPage`

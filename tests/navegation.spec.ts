@@ -1,11 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { LoginPage } from "../pageobjests/LoginPage";
+import { SideMenuOption, SidePanel } from '../components/SidePanel';
 
 test('Check left menu options', async ({ page }) => {
 
     const loginPage = new LoginPage(page);
     await loginPage.doLogin('Admin', 'admin123');
-    await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
+    const sidePanel = new SidePanel(page);
+    await sidePanel.beVisibleOption(SideMenuOption.ADMIN);
 
     const leftMenuItems = page.getByLabel('Sidepanel').getByRole('listitem')
     const currentMenuItems = await leftMenuItems.count();
@@ -54,8 +56,9 @@ test('Check all the qualifications options', async ({ page }) => {
 
     const loginPage = new LoginPage(page);
     await loginPage.doLogin('Admin', 'admin123');
+    const sidePanel = new SidePanel(page);
+    await sidePanel.clickOption(SideMenuOption.ADMIN);
 
-    await page.getByRole('link', { name: 'Admin' }).click();
     await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('Qualifications').click();
     const qualificationOptions = page.getByRole('menu').locator('li');
 
@@ -77,8 +80,9 @@ test('Check all the Configuration options', async ({ page }) => {
 
     const loginPage = new LoginPage(page);
     await loginPage.doLogin('Admin', 'admin123');
-
-    await page.getByRole('link', { name: 'Admin' }).click();
+    const sidePanel = new SidePanel(page);
+    await sidePanel.clickOption(SideMenuOption.ADMIN);
+    
     await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('Configuration').click();
     const configurationOptions = page.getByRole('menu').locator('li');
 
@@ -89,4 +93,13 @@ test('Check all the Configuration options', async ({ page }) => {
         await expect(page).toHaveURL(new RegExp(expectedPage.path));
         await page.getByRole('navigation', { name: 'Topbar Menu' }).getByText('Configuration').click();
     }
+});
+
+test('Verify that the filter displays only the selected option', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin('Admin', 'admin123');
+    const sidePanel = new SidePanel(page);
+    await sidePanel.filterBy(SideMenuOption.MY_INFO);
+    await sidePanel.beVisibleOption(SideMenuOption.MY_INFO);
+    await sidePanel.notBeVisibleOption(SideMenuOption.ADMIN);
 });
